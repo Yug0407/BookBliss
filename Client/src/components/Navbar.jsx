@@ -1,5 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {assets} from '../assets/assets';
+import { useClerk, useUser , UserButton } from '@clerk/clerk-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+const BookIcon = ()=>{
+    <svg className="w-4 h-4 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" >
+        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 19V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13H7a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M9 3v14m7 0v4" />
+    </svg>
+}
 
 const Navbar = () => {
     const navLinks = [
@@ -10,10 +18,23 @@ const Navbar = () => {
     ];
 
 
-    const [isScrolled, setIsScrolled] = React.useState(false);
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const {openSignIn} = useClerk();
+    const user = useUser();
 
-    React.useEffect(() => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+
+        if(location.pathname !== '/'){
+            setIsScrolled(true);
+        }else{
+            setIsScrolled(false);
+        }
+        setIsScrolled(prev => location.pathname !== '/'?true : prev);
+
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 10);
         };
@@ -40,7 +61,7 @@ const Navbar = () => {
                             <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
                         </a>
                     ))}
-                    <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
+                    <button onClick={()=>navigate("/owner")} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
                        Dash Board
                     </button>
                 </div>
@@ -48,14 +69,33 @@ const Navbar = () => {
                 {/* Desktop Right */}
                 <div className="hidden md:flex items-center gap-4">
                     <img src={assets.searchIcon} alt="User Avatar" className={`${isScrolled ? "invert" : ""} h-7 transition-all duration-500`} />
-                    <button className={`px-8 py-2.5 rounded-full ml-4 transition-all duration-500 ${isScrolled ? "text-white bg-black" : "bg-white text-black"}`}>
+                    {user.isSignedIn ? 
+                    (
+                        <UserButton>
+                            <UserButton.MenuItems>
+                            <UserButton.Action label='My Booking' labelIcon={<BookIcon/>} onClick={()=>navigate("/my-bookings")}/>
+                            </UserButton.MenuItems>
+                        </UserButton>
+                    )
+                    :
+                    (
+                    <button onClick={openSignIn} className={`px-8 py-2.5 rounded-full ml-4 transition-all duration-500 ${isScrolled ? "text-white bg-black hover:bg-gray-800" : "bg-white text-black hover:bg-gradient-to-r from-gray-100 to-gray-400"}`}>
                         Login
                     </button>
+                    )}
+                   
                 </div>
 
                 {/* Mobile Menu Button */}
+
+    
                 <div className="flex items-center gap-3 md:hidden">
                     <img onClick={()=>{setIsMenuOpen(!isMenuOpen)}} src={assets.menuIcon} alt="" className={`${isScrolled ? "invert" : ""} h-4 transition-all duration-500`} />
+                    {user.isSignedIn && <UserButton>
+                            <UserButton.MenuItems>
+                            <UserButton.Action label='My Booking' labelIcon={<BookIcon/>} onClick={()=>navigate("/my-bookings")}/>
+                            </UserButton.MenuItems>
+                        </UserButton>}
                 </div>
 
                 {/* Mobile Menu */}
@@ -70,16 +110,16 @@ const Navbar = () => {
                         </a>
                     ))}
 
-                    <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
+                    {user.isSignedIn && <button onClick={()=>navigate("/owner")} className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
                           Dash Board 
-                    </button>
-
-                    <button className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
+                    </button>}
+                   
+                    {!user.isSignedIn && <button onClick={openSignIn} className="bg-black hover:bg-gradient-to-r from-gray-600 to-gray-650 text-white px-8 py-2.5 rounded-full transition-all duration-1000">
                         Login
-                    </button>
+                    </button>}
                 </div>
             </nav>
     );
-}
+}  
 
 export default Navbar;
