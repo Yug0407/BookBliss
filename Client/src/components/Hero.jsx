@@ -13,7 +13,7 @@ const Hero = () => {
       </p>
       <h1 className="font-playfair font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
             Discover Your Perfect{" "}
-            <span className="font-playfair text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-400">
+            <span className="font-playfair text-transparent bg-clip-text bg-linear-gradient-to-r from-amber-200 to-amber-400">
               Getaway
             </span>
           </h1>

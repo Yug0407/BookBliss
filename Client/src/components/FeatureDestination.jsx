@@ -29,7 +29,7 @@ const FeatureDestination = () => {
 
         {/* Centered button */}
         <div className="text-center mt-6">
-          <button onClick={()=>{navigate('/rooms'); scrollTo(0,0)}} className="bg-white text-black border border-black px-4 py-2 rounded-lg rounded-lg px-8 py-3 text-sm font-medium hover:bg-gray-200 transition-colors shadow-sm">
+          <button onClick={()=>{navigate('/rooms'); scrollTo(0,0)}} className="bg-white text-black border border-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors shadow-sm">
             View All Hotels
           </button>
         </div>

@@ -79,7 +79,7 @@ const Navbar = () => {
                     )
                     :
                     (
-                    <button onClick={openSignIn} className={`px-8 py-2.5 rounded-full ml-4 transition-all duration-500 ${isScrolled ? "text-white bg-black hover:bg-gray-800" : "bg-white text-black hover:bg-gradient-to-r from-gray-100 to-gray-400"}`}>
+                    <button onClick={openSignIn} className={`px-8 py-2.5 rounded-full ml-4 transition-all duration-500 ${isScrolled ? "text-white bg-black hover:bg-gray-800" : "bg-white text-black hover:bg-linear-gradient-to-r from-gray-100 to-gray-400"}`}>
                         Login
                     </button>
                     )}
@@ -114,7 +114,7 @@ const Navbar = () => {
                           Dash Board 
                     </button>}
                    
-                    {!user.isSignedIn && <button onClick={openSignIn} className="bg-black hover:bg-gradient-to-r from-gray-600 to-gray-650 text-white px-8 py-2.5 rounded-full transition-all duration-1000">
+                    {!user.isSignedIn && <button onClick={openSignIn} className="bg-black hover:bg-linear-gradient-to-r from-gray-600 to-gray-650 text-white px-8 py-2.5 rounded-full transition-all duration-1000">
                         Login
                     </button>}
                 </div>
