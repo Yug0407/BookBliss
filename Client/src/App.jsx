@@ -3,6 +3,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Home from './Pages/Home';
 import Footer from './components/Footer';
+import AllRoom from './Pages/AllRoom';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <div className='min-h-[70vh]'>
         <Routes>
           <Route path='/' element={<Home/>}/>
+          <Route path='/rooms' element={<AllRoom/>}/>
         </Routes>
       </div>
       <Footer/>
