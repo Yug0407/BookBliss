@@ -3,7 +3,7 @@ import { assets } from '../assets/assets'
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-amber-50 to-orange-50 border-t border-amber-100">
+    <footer className="bg-gradient-to-br from-slate-50 to-blue-50 border-t border-amber-100">
       {/* Main Footer */}
       <div className="container mx-auto px-6 py-12">
         <div className="text-center max-w-2xl mx-auto mb-6">
@@ -11,7 +11,7 @@ const Footer = () => {
             <div className="w-12 h-12 bg-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
               <span className="text-white font-bold text-xl">🏨</span>
             </div>
-            <span className="font-playfair text-3xl font-bold text-gray-900">QuickStay</span>
+            <span className="font-playfair text-3xl font-bold text-gray-900">BookBliss</span>
           </div>
           <p className="text-gray-600 text-lg leading-relaxed">
             Making your travels memorable with the perfect stay. Experience comfort, luxury, and exceptional service.

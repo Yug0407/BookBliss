@@ -12,9 +12,9 @@ const Hero = () => {
         The Ultimate Hotel Experience
       </p>
       <h1 className="font-playfair font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
-            Discover Your Perfect{" "}
-            <span className="font-playfair text-transparent bg-clip-text bg-linear-gradient-to-r from-amber-200 to-amber-400">
-              Getaway
+            Discover Your Perfect{' '}
+            <span className="font-playfair text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-400">
+              Get away
             </span>
           </h1>
 
