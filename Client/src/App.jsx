@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import AllRoom from './Pages/AllRoom';
 import RoomDetails from './Pages/RoomDetails';
 import MyBooking from './Pages/MyBooking';
+import HotelReg from './components/HotelReg';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
   return (
     <div>
       {!isOwnerPath && <Navbar />}
+      { false && <HotelReg/>}
       <div className='min-h-[70vh]'>
         <Routes>
           <Route path='/' element={<Home/>}/>
