@@ -15,12 +15,14 @@ import ListRoom from './Pages/hotelOwner/ListRoom';
 function App() {
 
   const isOwnerPath = useLocation().pathname.includes('owner');
+  const location = useLocation();
+
 
   return (
     <div>
       {!isOwnerPath && <Navbar />}
       { false && <HotelReg/>}
-      <div className='min-h-[70vh]'>
+      <div className={`min-h-[70vh] ${location.pathname === '/owner/add-room' ? "pb-80" : "pb-5"}`}>
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/rooms' element={<AllRoom/>}/>
@@ -28,7 +30,7 @@ function App() {
           <Route path='/my-bookings' element={<MyBooking/>}/>
           <Route path='/owner' element={<Layout/>}> 
               <Route index element={<DashBoard/>}/>
-              <Route path='add-room' element={<AddRoom/>}/>
+              <Route path='add-room'  element={<AddRoom/>}/>
               <Route path='list-room' element={<ListRoom/>}/>
           </Route>
 
