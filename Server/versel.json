@@ -1,5 +1,12 @@
   {
     "version": 2,
+    "functions": {
+        "api/clerk/webhook": {
+            "memory": 1024,
+            "maxDuration": 10,
+            "excludeFiles": "node_modules/.prisma/**"
+        }
+    },
     "builds": [
         {
             "src": "server.js",
