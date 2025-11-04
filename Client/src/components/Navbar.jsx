@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {assets} from '../assets/assets';
-import { useClerk, useUser , UserButton } from '@clerk/clerk-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useClerk, UserButton , useUser} from '@clerk/clerk-react';
+import { useLocation } from 'react-router-dom';
+import { useAppContext } from '../context/AppContext';
 
 const BookIcon = ()=>{
     <svg className="w-4 h-4 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" >
@@ -21,10 +22,12 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {openSignIn} = useClerk();
-    const user = useUser();
 
-    const navigate = useNavigate();
+
     const location = useLocation();
+    const {isSignedIn ,user} = useUser();
+
+    const {  navigate , isOwner , setShowHotelReg} = useAppContext();
 
     useEffect(() => {
     const handleScroll = () => {
@@ -61,15 +64,18 @@ const Navbar = () => {
                             <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
                         </a>
                     ))}
-                    <button onClick={()=>navigate("/owner")} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
-                       Dash Board
+                    { user && (
+                        <button onClick={()=>isOwner ? navigate("/owner") : setShowHotelReg(true)} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
+                       {isOwner ? 'Dash Board' : 'List Your Hotel'}
                     </button>
+                    )
+                }
                 </div>
 
                 {/* Desktop Right */}
                 <div className="hidden md:flex items-center gap-4">
                     <img src={assets.searchIcon} alt="User Avatar" className={`${isScrolled ? "invert" : ""} h-7 transition-all duration-500`} />
-                    {user.isSignedIn ? 
+                    {isSignedIn ? 
                     (
                         <UserButton>
                             <UserButton.MenuItems>
@@ -91,7 +97,7 @@ const Navbar = () => {
     
                 <div className="flex items-center gap-3 md:hidden">
                     <img onClick={()=>{setIsMenuOpen(!isMenuOpen)}} src={assets.menuIcon} alt="" className={`${isScrolled ? "invert" : ""} h-4 transition-all duration-500`} />
-                    {user.isSignedIn && <UserButton>
+                    {isSignedIn && <UserButton>
                             <UserButton.MenuItems>
                             <UserButton.Action label='My Booking' labelIcon={<BookIcon/>} onClick={()=>navigate("/my-bookings")}/>
                             </UserButton.MenuItems>
@@ -110,11 +116,11 @@ const Navbar = () => {
                         </a>
                     ))}
 
-                    {user.isSignedIn && <button onClick={()=>navigate("/owner")} className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
-                          Dash Board 
+                    {isSignedIn && <button onClick={()=>isOwner ? navigate("/owner") : setShowHotelReg(true)} className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
+                           {isOwner ? 'Dash Board' : 'List Your Hotel'} 
                     </button>}
                    
-                    {!user.isSignedIn && <button onClick={openSignIn} className="bg-black hover:bg-linear-gradient-to-r from-gray-600 to-gray-650 text-white px-8 py-2.5 rounded-full transition-all duration-1000">
+                    {!isSignedIn && <button onClick={openSignIn} className="bg-black hover:bg-linear-gradient-to-r from-gray-600 to-gray-650 text-white px-8 py-2.5 rounded-full transition-all duration-1000">
                         Login
                     </button>}
                 </div>

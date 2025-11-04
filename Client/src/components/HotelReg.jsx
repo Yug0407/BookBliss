@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/assets'
+import { useAppContext } from '../context/AppContext.jsx';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const HotelReg = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -11,6 +14,9 @@ const HotelReg = ({ onClose }) => {
     description: ''
   });
 
+  const { setShowHotelReg , axios , getToken , setIsOwner } = useAppContext();
+
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -18,11 +24,35 @@ const HotelReg = ({ onClose }) => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const { name, contact, address, city, email, description } = formData;
+
+    const token = await getToken();
+    const { data } = await axios.post(
+      `/api/hotels/`,
+      { name, contact, address, city, email, description },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    console.log("Response:", data);
+
+    if (data.success) {
+      toast.success(data.message);
+      setIsOwner(true);
+      setShowHotelReg(false);
+    } else {
+      toast.error(data.message);
+    }
+  } catch (err) {
+    console.error("Error submitting form:", err);
+    toast.error(err.message);
+  }
+};
+
+
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn'>
@@ -51,15 +81,15 @@ const HotelReg = ({ onClose }) => {
               <p className='text-gray-600 mt-2'>Fill in your hotel details to get started</p>
             </div>
             <button 
-              onClick={onClose}
+              onClick={()=>setShowHotelReg(false)}
               className='hover:bg-gray-100 rounded-full transition-colors duration-200'
             >
-              <img src={assets.closeIcon} alt="close" className='h-5 w-5' />
+              <img  src={assets.closeIcon} alt="close" className='h-5 w-5' />
             </button>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className='space-y-6'>
+          <form onSubmit={handleSubmit} onClick={(e)=>e.stopPropagation()} className='space-y-6'>
             {/* Hotel Name */}
             <div>
               <label htmlFor="name" className='block text-sm font-semibold text-gray-700 mb-2'>

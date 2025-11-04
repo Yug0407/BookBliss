@@ -17,7 +17,15 @@ const HotelSchema = new mongoose.Schema({
     },city : {
         type : String ,
         require : true
+    },
+    description : {
+        type :String ,
+    },
+    email : {
+        type :String ,
+        require : true ,
     }
+    
 },{timestamps : true})
 
 const Hotel = mongoose.model("Hotel" , HotelSchema);

@@ -1,23 +1,26 @@
 import Hotel from "../models/Hotel.js";
 import User from "../models/User.js";
 
-export const registerHotel = async (red,res)=>{
+export const registerHotel = async (req,res)=>{
     try{
-        const { name , address , contact , city} = req.body;
-        const owner = req.user._id;
+        const {userId} = req.auth();
+        if(!userId){
+            return res.status(500).json({response : false , message : "Not authenticated "})
+        }
 
-        const hotel = await Hotel.findOne({owner});
+        const { name , address , contact , city ,description , email} = req.body;
+
+        const hotel = await Hotel.findOne({owner : userId });
         if(hotel){
             return res.json({success : true , message : "Hotel Already Registered"})
         }
 
-        await Hotel.create({name,address,contact,city});
-        await User.findByIdAndUpdate(owner , { role : "hotelOwner"});
+        await Hotel.create({name,address,contact,city, description,email ,owner : userId});
+        await User.findByIdAndUpdate(userId , { role : "hotelOwner"});
 
         res.json({success : true , message : 'Hotel Registered Successfully'})
 
     }catch(err){
         res.json({success : false , message : err.message});
-
     }
 }
